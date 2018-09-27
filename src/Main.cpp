@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
 			++updateCounter;
 		}
 		if (updateCounter >= 1) {
-			printf("MiliSeconds: %d, Nb of Updates: %d\n", elapsed.asMilliseconds(), updateCounter);
+			printf("MicroSeconds: %d, Nb of Updates: %d\n", elapsed.asMicroseconds(), updateCounter);
 		
 		}
 		else {
-			printf("MiliSeconds: %d\n", elapsed.asMilliseconds());
+			printf("MicroSeconds: %d\n", elapsed.asMicroseconds());
 
 		}
 		

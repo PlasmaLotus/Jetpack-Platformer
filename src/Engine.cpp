@@ -32,13 +32,13 @@ void Engine::run()
 		
 		mPrevElapsedTime = mElapsedTime;
 		mElapsedTime = mClock.restart();
-		lag += elapsed;
+		
 
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (mWindow.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				window.close();
+				mWindow.close();
 		}
 
 		tick();
@@ -50,10 +50,17 @@ void Engine::run()
 
 }
 
+void Engine::update(sf::Time time)
+{
+}
+
 void Engine::tick()
 {
 	//Handle ununiform time
 	//update Game
+
+
+
 
 	if (isFixedTimeStep) {
 		int lmao = 0;
@@ -61,14 +68,15 @@ void Engine::tick()
 		mAccumulatedElapsedTime -= mTargetElapsedTime;
 
 		while (mAccumulatedElapsedTime >= mElapsedTime) {
+			update(mElapsedTime);
 			++lmao;
 			mAccumulatedElapsedTime -= mElapsedTime;
-			update(mElapsedTime);
 
 			
 		}
 	}
 	else {
+		//Just tick as often as the PC can
 		update(sf::Time::Zero);
 		mElapsedTime = mAccumulatedElapsedTime;
 		mAccumulatedElapsedTime = sf::Time::Zero;
@@ -82,10 +90,14 @@ void Engine::tick()
 	//Render
 }
 
-Engine * Engine::getInstance()
+Engine& Engine::getInstance()
 {
+	static Engine instance;
+	return instance;
+	/*
 	if (!mInstance) {
 		mInstance = new Engine();
 	}
 	return mInstance;
+	 */
 }

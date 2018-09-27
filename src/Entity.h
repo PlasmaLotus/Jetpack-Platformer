@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <algorithm>
-#include <math>
+#include <math.h>
 #include "Component.h"
 
 class Entity {
