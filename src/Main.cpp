@@ -1,17 +1,35 @@
 
 #include <SFML/Graphics.hpp>
 #include "Main.h"
+#include "Input.h"
 //#include"states\statemanager.h"
+
+//Event testing
+#include "Event/EventManager.h"
+#include "Event/IEvent.h"
+#include "Event/IObserver.h"
+#include "Event/ISubject.h"
 
 void update();
 int main(int argc, char *argv[])
 {
-	
+	EventManager em;
+	IObserver ob;
+	ISubject sb;
+	int rep;
+	rep = em.Connect<IEvent>(&sb, &ob);
+	rep = em.Connect<IEvent>(&sb, &ob);
+	em.Emit(&sb, new IEvent);
+	rep = em.Disconnect<IEvent>(&sb, &ob);
+	rep = em.Disconnect<IEvent>(&sb, &ob);
 	/*
 	StateManager& sm = StateManager::getInstance();
 	sm.run();
 	return 0;
 	*/
+
+	Input input;
+	input.update();
 
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
@@ -77,11 +95,14 @@ void gotoxy(int x, int y)
 }
 
 void update() {}
+void render(double t)
+{
+}
 void render(double t);
 void loop() {
 	
 	
-	while (true)
+	while (false)
 	{
 		
 		

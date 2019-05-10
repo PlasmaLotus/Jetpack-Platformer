@@ -50,6 +50,10 @@ void Entity::render()
 	}
 }
 
+void Entity::debugRender()
+{
+}
+
 void Entity::added(char Scene)
 {
 }

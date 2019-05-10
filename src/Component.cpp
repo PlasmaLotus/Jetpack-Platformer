@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 
-Component::Component()
+Component::Component(bool activ, bool visib)
 {
 }
 
@@ -12,6 +12,10 @@ Component::~Component()
 }
 
 void Component::update()
+{
+}
+
+void Component::render()
 {
 }
 

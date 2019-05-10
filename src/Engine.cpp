@@ -1,5 +1,14 @@
 #include "Engine.h"
 
+Engine* Engine::mInstance = 0;
+
+Engine * Engine::getInstance()
+{
+	if (mInstance == 0) {
+		mInstance = new Engine();
+	}
+	return mInstance;
+}
 
 Engine::Engine():
 	mFpsCounter(0),
@@ -7,17 +16,26 @@ Engine::Engine():
 {
 }
 
-
 Engine::~Engine()
 {
 
 }
 
+void Engine::loadContent()
+{
+}
+
+void Engine::unloadContent()
+{
+}
+
+void Engine::initialize()
+{
+}
+
 void Engine::draw(sf::Time time)
 {
-	//foreach entity in entity list
-	//if visible
-	//window.draw()
+
 	mWindow.clear();
 	mWindow.display();
 }
@@ -32,13 +50,13 @@ void Engine::run()
 		
 		mPrevElapsedTime = mElapsedTime;
 		mElapsedTime = mClock.restart();
-		lag += elapsed;
+		//lag += elapsed;
 
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (mWindow.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				window.close();
+				mWindow.close();
 		}
 
 		tick();
@@ -48,6 +66,10 @@ void Engine::run()
 	}
 	//End Run
 
+}
+
+void Engine::update(sf::Time time)
+{
 }
 
 void Engine::tick()
@@ -82,10 +104,8 @@ void Engine::tick()
 	//Render
 }
 
-Engine * Engine::getInstance()
+
+float Engine::DeltaTime()
 {
-	if (!mInstance) {
-		mInstance = new Engine();
-	}
-	return mInstance;
+	return 0.0f;
 }

@@ -9,8 +9,12 @@
 
 class Engine
 {
-public:
+
+private:
+	static Engine* mInstance;
+	Engine();
 	virtual ~Engine();
+public:
 	void loadContent();
 	void unloadContent();
 	void initialize();
@@ -18,12 +22,11 @@ public:
 	void run();
 	void update(sf::Time time);
 	void tick();
-	Engine* getInstance();
+	static Engine* getInstance();
 
 	static float DeltaTime();
 private:
-	Engine();
-	static Engine* mInstance;
+	
 
 	sf::Time mElapsedTime;
 	sf::Time mPrevElapsedTime;
@@ -37,11 +40,11 @@ private:
 	bool isRunning;
 
 
-
 	bool isFixedTimeStep;
 	long ticks;
 	long previousTicks;
 
 };
+
 
 #endif // ENGINE
