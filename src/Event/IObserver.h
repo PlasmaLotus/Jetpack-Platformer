@@ -12,7 +12,7 @@ public:
 	IObserver();
 	~IObserver();
 
-	virtual void HandleEvent(const ISubject* subject, const IEvent& event);
+	virtual void HandleEvent(ISubject* subject, const IEvent& event);
 protected:
 	int __nbEventRecived;
 };

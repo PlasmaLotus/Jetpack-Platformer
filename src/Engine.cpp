@@ -1,13 +1,9 @@
 #include "Engine.h"
 
-Engine* Engine::mInstance = 0;
-
-Engine * Engine::getInstance()
+float Engine::DeltaTime()
 {
-	if (mInstance == 0) {
-		mInstance = new Engine();
-	}
-	return mInstance;
+	//TODO:fjdoasljfdnspaioh
+	return 0.0f;
 }
 
 Engine::Engine():
@@ -50,6 +46,7 @@ void Engine::run()
 		
 		mPrevElapsedTime = mElapsedTime;
 		mElapsedTime = mClock.restart();
+
 		//lag += elapsed;
 
 		sf::Event event;
@@ -60,8 +57,6 @@ void Engine::run()
 		}
 
 		tick();
-
-		
 
 	}
 	//End Run
@@ -77,20 +72,24 @@ void Engine::tick()
 	//Handle ununiform time
 	//update Game
 
+
+
+
 	if (isFixedTimeStep) {
 		int lmao = 0;
 		mElapsedTime = mTargetElapsedTime;
 		mAccumulatedElapsedTime -= mTargetElapsedTime;
 
 		while (mAccumulatedElapsedTime >= mElapsedTime) {
+			update(mElapsedTime);
 			++lmao;
 			mAccumulatedElapsedTime -= mElapsedTime;
-			update(mElapsedTime);
 
 			
 		}
 	}
 	else {
+		//Just tick as often as the PC can
 		update(sf::Time::Zero);
 		mElapsedTime = mAccumulatedElapsedTime;
 		mAccumulatedElapsedTime = sf::Time::Zero;
@@ -104,8 +103,15 @@ void Engine::tick()
 	//Render
 }
 
-
-float Engine::DeltaTime()
+Engine& Engine::getInstance()
 {
-	return 0.0f;
+	static Engine instance;
+	return instance;
+	/*
+	if (!mInstance) {
+		mInstance = new Engine();
+	}
+	return *mInstance;
+	*/
+	
 }

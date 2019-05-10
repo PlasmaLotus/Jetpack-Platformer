@@ -5,13 +5,13 @@
 #include <list>
 #include <algorithm>
 #include "Entity.h"
-
+#include <thread>
 
 class Engine
 {
 
 private:
-	static Engine* mInstance;
+	//static Engine* mInstance;
 	Engine();
 	virtual ~Engine();
 public:
@@ -22,12 +22,14 @@ public:
 	void run();
 	void update(sf::Time time);
 	void tick();
-	static Engine* getInstance();
+
+	static Engine& getInstance();
+	//static Engine* getInstance();
 
 	static float DeltaTime();
 private:
-	
 
+	
 	sf::Time mElapsedTime;
 	sf::Time mPrevElapsedTime;
 	sf::Time mTargetElapsedTime;

@@ -2,7 +2,9 @@
 #include "Entity.h"
 
 
-Component::Component(bool activ, bool visib)
+Component::Component(bool activ, bool visib):
+	active{activ},
+	visible{visib}
 {
 }
 
