@@ -1,0 +1,5 @@
+#ifndef __VIRTUALBUTTON__
+#define __VIRTUALBUTTON__
+
+
+#endif // VIRTUALBUTTON

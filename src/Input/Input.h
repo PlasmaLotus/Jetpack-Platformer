@@ -21,12 +21,13 @@ constexpr auto MAX_CONTROLLERS = 4;
 class CONTROLLER_STATE
 {
 public:
-	XINPUT_STATE previousState;
+
 	XINPUT_STATE state;
 	bool bConnected;
 	
 	std::string toString();
 	char* toBytes();
+
 
 };
 
@@ -36,15 +37,20 @@ struct CONTROLLER_INPUTS {
 };
 
 
-class RawInput {
+class Input {
 public:
-	RawInput();
-	virtual ~RawInput();
+	Input();
+	virtual ~Input();
 
+	static enum Buttons {
+
+	};
 	
 	virtual void update();
 	virtual CONTROLLER_INPUTS getControllerInputs(int id);
 	virtual std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS> getAllControllerInputs();
+
+
 
 	virtual std::string getControllerStateString(int id);
 	virtual std::string getAllControllerStatesString(int id);
@@ -61,7 +67,6 @@ private:
 	void deInit();
 	void onControllerConnect(int id);
 	void onControllerDisconnect(int id);
-
 };
 
-#endif // RAWINPUT
+#endif // ENTITY

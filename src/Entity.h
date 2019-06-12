@@ -7,6 +7,7 @@
 #include <math.h>
 #include "Component.h"
 
+
 class Entity {
 public:
 	Entity();
@@ -33,6 +34,12 @@ protected:
 	//Scene mScene;
 	std::list<Component*> mComponents;
 	std::list<Component*>mGabageComponentList;
+
+
+	//Collision
+	virtual void CollisionCheck(Entity const& e);
+	virtual void CollisionCheck(Entity const& e, sf::Vector2f at);
+
 
 
 };

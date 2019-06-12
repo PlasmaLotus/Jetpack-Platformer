@@ -13,6 +13,7 @@
 void update();
 int main(int argc, char *argv[])
 {
+	/*
 	EventManager em;
 	IObserver ob;
 	ISubject sb;
@@ -22,14 +23,18 @@ int main(int argc, char *argv[])
 	em.Emit(&sb, new IEvent);
 	rep = em.Disconnect<IEvent>(&sb, &ob);
 	rep = em.Disconnect<IEvent>(&sb, &ob);
+	*/
+
+	Input input;
+	input.update();
+
 	/*
 	StateManager& sm = StateManager::getInstance();
 	sm.run();
 	return 0;
 	*/
 
-	Input input;
-	input.update();
+
 
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);

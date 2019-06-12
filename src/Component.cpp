@@ -8,7 +8,6 @@ Component::Component(bool activ, bool visib):
 {
 }
 
-
 Component::~Component()
 {
 }

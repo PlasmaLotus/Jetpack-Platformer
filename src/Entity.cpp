@@ -75,3 +75,12 @@ void Entity::remove(Component * c)
 {
 	mGabageComponentList.push_back(c);
 }
+
+void Entity::CollisionCheck(Entity const & e)
+{
+}
+
+void Entity::CollisionCheck(Entity const & e, sf::Vector2f at)
+{
+}
+

@@ -1,12 +1,12 @@
 #include "Input.h"
 #include <Xinput.h>
 
-RawInput::RawInput()
+Input::Input()
 {
 	init();
 }
 
-void RawInput::init()
+void Input::init()
 {
 	//XInputEnable(true);
 	//XInputGetBatteryInformation()
@@ -16,20 +16,12 @@ void RawInput::init()
 	update();
 }
 
-void RawInput::deInit()
+void Input::deInit()
 {
 	//XInputEnable(false);
-	XINPUT_STATE state;
-	XINPUT_VIBRATION vibration;
-	for (DWORD i = 0; i < MAX_CONTROLLERS; i++)
-	{
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
-		ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
-		XInputSetState(i, &vibration);
-	}
 }
 
-void RawInput::onControllerConnect(int id)
+void Input::onControllerConnect(int id)
 {
 	/*
 	XINPUT_VIBRATION vibration;
@@ -41,7 +33,7 @@ void RawInput::onControllerConnect(int id)
 	printf("Controller: %s\n", sf::Joystick::getIdentification(i).name.toAnsiString().c_str());
 }
 
-void RawInput::onControllerDisconnect(int id)
+void Input::onControllerDisconnect(int id)
 {
 	//Reset Vibration to 0
 	XINPUT_STATE state;
@@ -52,15 +44,16 @@ void RawInput::onControllerDisconnect(int id)
 }
 
 
-RawInput::~RawInput()
+
+Input::~Input()
 {
 	deInit();
 }
 
-void RawInput::update()
+void Input::update()
 {
 	updateControllers();
-	//Update keyboard
+	
 }
 
 CONTROLLER_INPUTS Input::getControllerInputs(int id)
@@ -68,32 +61,32 @@ CONTROLLER_INPUTS Input::getControllerInputs(int id)
 	return CONTROLLER_INPUTS();
 }
 
-std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS> RawInput::getAllControllerInputs()
+std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS> Input::getAllControllerInputs()
 {
 	return std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS>();
 }
 
-std::string RawInput::getControllerStateString(int id)
+std::string Input::getControllerStateString(int id)
 {
 	return std::string();
 }
 
-std::string RawInput::getAllControllerStatesString(int id)
+std::string Input::getAllControllerStatesString(int id)
 {
 	return std::string();
 }
 
-char * RawInput::getControllerStateBytes(int id)
+char * Input::getControllerStateBytes(int id)
 {
 	return nullptr;
 }
 
-std::string RawInput::getAllControllerStatesBytes(int id)
+std::string Input::getAllControllerStatesBytes(int id)
 {
 	return std::string();
 }
 
-HRESULT RawInput::updateControllers() {
+HRESULT Input::updateControllers() {
 	DWORD dwResult;
 	for (DWORD i = 0; i < MAX_CONTROLLERS; i++)
 	{
@@ -129,22 +122,13 @@ HRESULT RawInput::updateControllers() {
 	return S_OK;
 }
 
-
-
-
-
-//CONTROLLER_STATE
 std::string CONTROLLER_STATE::toString()
 {
-	//TODO
-
 	return std::string();
 }
 
 char * CONTROLLER_STATE::toBytes()
 {
-	//TODO
-
 	return nullptr;
 }
 
