@@ -1,0 +1,7 @@
+ctor/dtor
+process args
+run
+gameloop{getActiveState, ProcessInput}
+InitSettingsConfig
+InitRenderer
+cleanup

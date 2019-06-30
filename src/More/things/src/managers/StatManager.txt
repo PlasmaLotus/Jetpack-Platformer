@@ -1,0 +1,6 @@
+/*
+ * Provides the StatManager class in the GQE namespace which is responsible
+ * for collecting and providing Statistical information about the application.
+ * This information includes, the current Updates per second and Frames per
+ * second and other statistics.
+*/

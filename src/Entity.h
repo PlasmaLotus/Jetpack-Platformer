@@ -3,10 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <list>
-#include <algorithm>
+//#include <algorithm>
 #include <math.h>
 #include "Component.h"
 
+class Collider;
 class Entity {
 public:
 	Entity();
@@ -26,15 +27,17 @@ public:
 	bool collidable;
 	
 
-	sf::Vector2f position() { return mPosition; };
-	sf::Vector2f & rPosition() { return mPosition; };
+	sf::Vector2f position() { return mPosition; }
+	sf::Vector2f & rPosition() { return mPosition; }
+	void setPosition(sf::Vector2f pos) { mPosition = pos; }
 protected:
 	sf::Vector2f mPosition;
+	sf::Vector2f mSize;
 	//Scene mScene;
-	std::list<Component*> mComponents;
+	std::list<Component*>mComponents;
 	std::list<Component*>mGabageComponentList;
 
-
+	sf::RectangleShape debugRectangle;
 };
 
 #endif // ENTITY

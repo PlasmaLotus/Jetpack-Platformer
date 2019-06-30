@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Testing", "Testing\Testing.vcxproj", "{024594CF-296A-4161-8987-7572ACF64BF8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTesting", "UnitTesting\UnitTesting.vcxproj", "{70909D22-1ED7-4229-92E1-E3A8E69FFE63}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTest", "MapTest\MapTest.vcxproj", "{154019A5-B7D1-41EA-895E-D30BF7689583}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Networking", "Networking\Networking.vcxproj", "{064E9EE2-E87F-4D55-8621-FADAF232F627}"
+	ProjectSection(ProjectDependencies) = postProject
+		{024594CF-296A-4161-8987-7572ACF64BF8} = {024594CF-296A-4161-8987-7572ACF64BF8}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{024594CF-296A-4161-8987-7572ACF64BF8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{024594CF-296A-4161-8987-7572ACF64BF8}.Debug|Win32.Build.0 = Debug|Win32
+		{024594CF-296A-4161-8987-7572ACF64BF8}.Release|Win32.ActiveCfg = Release|Win32
+		{024594CF-296A-4161-8987-7572ACF64BF8}.Release|Win32.Build.0 = Release|Win32
+		{70909D22-1ED7-4229-92E1-E3A8E69FFE63}.Debug|Win32.ActiveCfg = Debug|Win32
+		{70909D22-1ED7-4229-92E1-E3A8E69FFE63}.Release|Win32.ActiveCfg = Release|Win32
+		{70909D22-1ED7-4229-92E1-E3A8E69FFE63}.Release|Win32.Build.0 = Release|Win32
+		{154019A5-B7D1-41EA-895E-D30BF7689583}.Debug|Win32.ActiveCfg = Debug|Win32
+		{154019A5-B7D1-41EA-895E-D30BF7689583}.Debug|Win32.Build.0 = Debug|Win32
+		{154019A5-B7D1-41EA-895E-D30BF7689583}.Release|Win32.ActiveCfg = Release|Win32
+		{154019A5-B7D1-41EA-895E-D30BF7689583}.Release|Win32.Build.0 = Release|Win32
+		{064E9EE2-E87F-4D55-8621-FADAF232F627}.Debug|Win32.ActiveCfg = Debug|Win32
+		{064E9EE2-E87F-4D55-8621-FADAF232F627}.Debug|Win32.Build.0 = Debug|Win32
+		{064E9EE2-E87F-4D55-8621-FADAF232F627}.Release|Win32.ActiveCfg = Release|Win32
+		{064E9EE2-E87F-4D55-8621-FADAF232F627}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

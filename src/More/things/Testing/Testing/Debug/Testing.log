@@ -1,0 +1,92 @@
+﻿Build started 2019-04-15 17:25:56.
+     1>Project "C:\Users\lsnazer\Downloads\stuff\things\Testing\Testing\Testing.vcxproj" on node 3 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Users\lsnazer\Downloads\SDL2-2.0.9\include" /I"C:\Users\lsnazer\Downloads\SDL2_gfx-1.0.4" /I"C:\Users\lsnazer\Downloads\loguru-master" /I"C:\Users\lsnazer\Downloads\SDL2_image-2.0.4\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\Component.cxx ..\..\..\DialogueBox.cxx ..\..\..\Easing\Hover.cpp ..\..\..\Engine.cxx ..\..\..\health.cxx ..\..\..\main.cpp ..\..\..\Menu\IMenuItem.cpp ..\..\..\PennerEasing\Back.cpp ..\..\..\PennerEasing\Bounce.cpp ..\..\..\PennerEasing\Circ.cpp ..\..\..\PennerEasing\Cubic.cpp ..\..\..\PennerEasing\Elastic.cpp ..\..\..\PennerEasing\Expo.cpp ..\..\..\PennerEasing\Linear.cpp ..\..\..\PennerEasing\Quad.cpp ..\..\..\PennerEasing\Quart.cpp ..\..\..\PennerEasing\Quint.cpp ..\..\..\PennerEasing\Sine.cpp ..\..\..\RenderWheel.cxx ..\..\..\Settings\Settings.cxx ..\..\..\Settings\Utility.cxx ..\..\..\TweenHandler.cxx ..\..\..\word.cxx Source.cpp
+         Source.cpp
+         word.cxx
+         TweenHandler.cxx
+         Utility.cxx
+     1>c:\users\lsnazer\downloads\stuff\settings\utility.cxx(42): warning C4101: 'lptstr' : unreferenced local variable
+         Settings.cxx
+         RenderWheel.cxx
+     1>c:\users\lsnazer\downloads\stuff\renderwheel.cxx(38): warning C4244: 'initializing' : conversion from 'float' to 'short', possible loss of data
+         Sine.cpp
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\sine.cpp(4): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\sine.cpp(7): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\sine.cpp(11): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+         Quint.cpp
+         Quart.cpp
+         Quad.cpp
+         Linear.cpp
+         Expo.cpp
+         Elastic.cpp
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\elastic.cpp(9): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\elastic.cpp(17): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\elastic.cpp(28): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\pennereasing\elastic.cpp(31): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+         Cubic.cpp
+         Circ.cpp
+         Bounce.cpp
+         Back.cpp
+         IMenuItem.cpp
+         main.cpp
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(73): warning C4800: 'SDL_bool' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(142): warning C4101: 'alpha' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(141): warning C4101: 'pixel' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(140): warning C4101: 'color' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(129): warning C4101: 'sdl_return_error' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(141): warning C4101: 'temp' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(139): warning C4101: 'fmt' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(142): warning C4101: 'red' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(142): warning C4101: 'blue' : unreferenced local variable
+     1>c:\users\lsnazer\downloads\stuff\main.cpp(142): warning C4101: 'green' : unreferenced local variable
+         health.cxx
+         Generating Code...
+         Compiling...
+         Engine.cxx
+         Hover.cpp
+     1>c:\users\lsnazer\downloads\stuff\easing\hover.cpp(4): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\easing\hover.cpp(7): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\lsnazer\downloads\stuff\easing\hover.cpp(11): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+         DialogueBox.cxx
+         Component.cxx
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\lsnazer\Downloads\stuff\things\Testing\Debug\Testing.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\lsnazer\Downloads\SDL2-2.0.9\lib\x86" /LIBPATH:"C:\Users\lsnazer\Downloads\SDL2_gfx-1.0.4" /LIBPATH:"C:\Users\lsnazer\Downloads\loguru-master" /LIBPATH:"C:\Users\lsnazer\Downloads\SDL2_image-2.0.4\lib\x86" SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\lsnazer\Downloads\stuff\things\Testing\Debug\Testing.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\lsnazer\Downloads\stuff\things\Testing\Debug\Testing.lib" /MACHINE:X86 Debug\Component.obj
+         Debug\DialogueBox.obj
+         Debug\Hover.obj
+         Debug\Engine.obj
+         Debug\health.obj
+         Debug\main.obj
+         Debug\IMenuItem.obj
+         Debug\Back.obj
+         Debug\Bounce.obj
+         Debug\Circ.obj
+         Debug\Cubic.obj
+         Debug\Elastic.obj
+         Debug\Expo.obj
+         Debug\Linear.obj
+         Debug\Quad.obj
+         Debug\Quart.obj
+         Debug\Quint.obj
+         Debug\Sine.obj
+         Debug\RenderWheel.obj
+         Debug\Settings.obj
+         Debug\Utility.obj
+         Debug\TweenHandler.obj
+         Debug\word.obj
+         Debug\Source.obj
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual class std::function<void __cdecl(void)> __thiscall Menu::RangeMenuItem::getFn(void)const " (?getFn@RangeMenuItem@Menu@@UBE?AV?$function@$$A6AXXZ@std@@XZ)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const __thiscall Menu::RangeMenuItem::getName(void)const " (?getName@RangeMenuItem@Menu@@UBE?BV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall Menu::RangeMenuItem::setFn(class std::function<void __cdecl(void)>)" (?setFn@RangeMenuItem@Menu@@UAEXV?$function@$$A6AXXZ@std@@@Z)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual class std::function<void __cdecl(void)> __thiscall Menu::MappedRangeMenuItem::getFn(void)const " (?getFn@MappedRangeMenuItem@Menu@@UBE?AV?$function@$$A6AXXZ@std@@XZ)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const __thiscall Menu::MappedRangeMenuItem::getName(void)const " (?getName@MappedRangeMenuItem@Menu@@UBE?BV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall Menu::MappedRangeMenuItem::getOptionString(void)const " (?getOptionString@MappedRangeMenuItem@Menu@@UBE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall Menu::MappedRangeMenuItem::setFn(class std::function<void __cdecl(void)>)" (?setFn@MappedRangeMenuItem@Menu@@UAEXV?$function@$$A6AXXZ@std@@@Z)
+     1>IMenuItem.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall Menu::MappedRangeMenuItem::OnOptionChange(void)" (?OnOptionChange@MappedRangeMenuItem@Menu@@UAEXXZ)
+     1>C:\Users\lsnazer\Downloads\stuff\things\Testing\Debug\Testing.exe : fatal error LNK1120: 8 unresolved externals
+     1>Done Building Project "C:\Users\lsnazer\Downloads\stuff\things\Testing\Testing\Testing.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:09.27

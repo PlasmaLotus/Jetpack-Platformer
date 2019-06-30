@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+#include "Engine.h"
 Entity::Entity() : Entity(sf::Vector2f(0.f, 0.f)) {	 
 }
 	
@@ -9,6 +9,7 @@ Entity::Entity(sf::Vector2f pos) :
 	active = true;
 	collidable = true;
 	visible = true;
+	debugRectangle = sf::RectangleShape(sf::Vector2f(8, 8));
 }
 
 Entity::~Entity()
@@ -52,6 +53,8 @@ void Entity::render()
 
 void Entity::debugRender()
 {
+	debugRectangle.setPosition(mPosition);
+	Engine::getInstance().getWindow()->draw(debugRectangle);
 }
 
 void Entity::added(char Scene)

@@ -6,6 +6,7 @@ Updated May 13, 2017
 #ifndef __Main__
 #define __Main__
 
+#include "SFML/System.hpp"
 #include <iostream>
 #include <iomanip>
 #include <time.h>//clock()
