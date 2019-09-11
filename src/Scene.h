@@ -1,15 +1,13 @@
-#ifndef __ENGINE__
-#define __ENGINE__
+#ifndef __SCENE__
+#define __SCENE__
 
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <algorithm>
 #include "Entity.h"
 
-
 class Scene
 {
-
 	Scene();
 	virtual ~Scene();
 	int width;
@@ -21,10 +19,9 @@ public:
 	
 
 private:
-	
 	std::list<Entity> mEntities;
 
 };
 
 
-#endif // ENGINE
+#endif // SCENE

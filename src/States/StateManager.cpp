@@ -1,5 +1,4 @@
 #include "StateManager.h"
-#include "GameState.h"
 
 StateManager::StateManager() :
 	_currentState(NULL),

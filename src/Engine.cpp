@@ -1,29 +1,39 @@
 #include "Engine.h"
+//#include "Input/RawInput.h"
+//#include "Event/EventManager.h"
 
-
-float Engine::mRawDeltaTime = 0.0f;
-float Engine::mDeltaTime = 0.0f;
 float Engine::DeltaTime()
 {
 	//TODO:fjdoasljfdnspaioh
-	return 0.0f;
+	return mTargetElapsedTime.asSeconds();
+}
+
+float Engine::DeltaTimeRender()
+{
+	return mTargetElapsedTimeRender.asSeconds();
 }
 
 float Engine::RawDeltaTime()
 {
-	return 0.0f;
+	return mRawDeltaTime;
+	//return mElapsedTime.asSeconds();
+}
+
+unsigned int Engine::FPS()
+{
+	return 1/mTargetElapsedTime.asSeconds();
 }
 
 Engine::Engine():
 	mElapsedTime(sf::Time::Zero),
 	mElapsedTimeTotal(sf::Time::Zero),
 	mPrevElapsedTime(sf::Time::Zero),
-	mTargetElapsedTime(sf::Time::Zero),
-	mTargetElapsedTimeRender(sf::Time::Zero),
+	mTargetElapsedTime(sf::seconds(1.0f/144.f)),
+	mTargetElapsedTimeRender(sf::seconds(1.0f / 60.f)),
 	mAccumulatedElapsedTime(sf::Time::Zero),
 	mAccumulatedElapsedTimeRender(sf::Time::Zero),
-	mFrameCounter(0),
-	_mFrameSubCounter(0),
+	mTickCounter(0),
+	_mTickSubCounter(0),
 	_prevTimeStamp(sf::Time::Zero),
 	mClock(sf::Clock()),
 	isRunning(true),
@@ -38,6 +48,7 @@ Engine::Engine():
 	mElapsedTime = mClock.restart();
 	//mElapsedTimeRender = mElapsedTime;
 	//mLag
+	Init();
 }
 
 Engine::~Engine()
@@ -45,25 +56,36 @@ Engine::~Engine()
 
 }
 
-void Engine::loadContent()
+void Engine::LoadContent()
 {
 }
 
-void Engine::unloadContent()
+void Engine::UnloadContent()
 {
 }
 
-void Engine::initialize()
+void Engine::Init()
 {
+	//mWindow.create(sf::VideoMode::getFullscreenModes()[0], "Neon Galaxy", sf::Style::Default);
+	//mWindow.create(sf::VideoMode::getDesktopMode(), "Edge Simulator", sf::Style::Default);
+	mWindow.create(sf::VideoMode(240, 160), "OK");
+	mRawInput.Init();
+
+	//mEventManager.Init();
+
+	//StateManager
+
+	//resourcemanager
+	//audio
+	//network
+
 }
 
-void Engine::draw(sf::Time time)
+void Engine::DeInit()
 {
-
-	mWindow.clear();
-	mWindow.display();
+	mRawInput.DeInit();
 }
-
+//Main loop
 void Engine::run()
 {
 	mClock.restart();
@@ -71,13 +93,15 @@ void Engine::run()
 	//Begin Run
 	while (mWindow.isOpen() && isRunning)
 	{
+		//Time
 		mPrevElapsedTime = mElapsedTime;
 		mElapsedTime = mClock.restart();
 		mElapsedTimeTotal += mElapsedTime;
 		//mElapsedTimeRender = mElapsedTine;
 		//lag += elapsed;
-
 		mRawDeltaTime = mElapsedTime.asSeconds();
+
+
 
 		sf::Event event;
 		while (mWindow.pollEvent(event)){
@@ -91,21 +115,32 @@ void Engine::run()
 	//End Run
 }
 
-void Engine::update(sf::Time time)
+void Engine::Update(sf::Time time)
 {
+	//Input
+	mRawInput.update();
+}
+void Engine::draw(sf::Time time)
+{
+	mWindow.clear();
+	//mWindow.draw(sf::CircleShape(10.0f, 10));
+	mWindow.display();
 }
 
 void Engine::tick()
 {
-	mFrameCounter++;
-	_mFrameSubCounter++;
-	if (mFrameCounter % mFrameCounter == 42) {
+	int arbitraryValue = 69;
+	mTickCounter++;
+	_mTickSubCounter++;
+	if (mTickCounter % arbitraryValue == 0) {
 		
 		sf::Time _lmao = mElapsedTimeTotal - _prevTimeStamp;
-		mDeltaTime = _lmao.asSeconds() / _mFrameSubCounter;
+		mDeltaTime = _lmao.asSeconds() / _mTickSubCounter;
 		_fps = 1.0f / mDeltaTime;
 		_prevTimeStamp = mElapsedTimeTotal;
+		_mTickSubCounter = 0;
 	}
+
 	//Handle ununiform time
 	//update Game
 
@@ -116,15 +151,22 @@ void Engine::tick()
 		mAccumulatedElapsedTime += mElapsedTime;
 
 		//MS_PER_FRAME
+		if (mAccumulatedElapsedTime >= mTargetElapsedTime) {
+			++lmao;
+			Update(mTargetElapsedTimeRender);
+			mAccumulatedElapsedTime -= mTargetElapsedTime;
+		}
+		/*
 		while (mAccumulatedElapsedTime >= mTargetElapsedTime) {
 			update(mElapsedTime);
 			++lmao;
 			mAccumulatedElapsedTime -= mElapsedTime;
 		}
+		*/
 	}
 	else {
 		//Just tick as often as the PC can
-		update(mElapsedTime);
+		Update(mElapsedTime);
 		//mElapsedTime = mAccumulatedElapsedTime;
 		//mAccumulatedElapsedTime = sf::Time::Zero;
 		//update(mElapsedTime);
@@ -136,11 +178,18 @@ void Engine::tick()
 	if (isFixedTimeStepRender) {
 		mAccumulatedElapsedTimeRender += mElapsedTime;
 		//MS_PER_RENDER_FRAME
+		if (mAccumulatedElapsedTimeRender >= mTargetElapsedTimeRender) {
+			renderThisFrame = true;
+			draw(mTargetElapsedTimeRender);
+			mAccumulatedElapsedTimeRender -= mTargetElapsedTimeRender;
+		}
+		/*
 		while (mAccumulatedElapsedTimeRender >= mTargetElapsedTimeRender) {
 			renderThisFrame = true;
 			draw(mAccumulatedElapsedTime);
 			mAccumulatedElapsedTimeRender -= mElapsedTime;
 		}
+		*/
 	}
 	else {
 		//Render every tick
@@ -148,12 +197,15 @@ void Engine::tick()
 		draw(mElapsedTime);
 	}
 
-
-	
 }
 
-Engine& Engine::getInstance()
-{
+RawInput & Engine::Input(){
+	return mRawInput;
+}
+EventManager& Engine::Event() {
+	return mEventManager;
+}
+Engine& Engine::getInstance(){
 	static Engine instance;
 	return instance;
 	/*
@@ -162,5 +214,6 @@ Engine& Engine::getInstance()
 	}
 	return *mInstance;
 	*/
-	
 }
+
+

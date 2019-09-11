@@ -4,7 +4,10 @@ State::State(){
 }
 State::~State(){
 }
-void State::tick(int dt, bool render){
+void State::update(float delta, bool render = true){
+}
+void State::render(float delta)
+{
 }
 void State::goBack() {
 }

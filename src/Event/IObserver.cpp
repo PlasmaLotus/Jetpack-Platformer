@@ -1,3 +1,6 @@
+#ifndef __IObserver__
+#define __IObserver__
+
 #include "IObserver.h"
 #include "IEvent.h"
 #include "ISubject.h"
@@ -14,3 +17,6 @@ void IObserver::HandleEvent(ISubject * subject, const IEvent & event)
 {
 	++__nbEventRecived;
 }
+
+
+#endif

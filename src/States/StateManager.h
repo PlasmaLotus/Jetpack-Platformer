@@ -6,6 +6,7 @@ Updated May 17, 2017
 #ifndef __StateManager__
 #define __StateManager__
 
+/*
 #include <stdint.h>
 #include <string.h>
 #include <stack>
@@ -89,4 +90,5 @@ protected:
 	bool _displayPlayerPos;
 	
 };
+*/
 #endif 

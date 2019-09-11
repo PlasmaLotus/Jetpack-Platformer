@@ -1,21 +1,15 @@
 #ifndef __IEVENT__
 #define __IEVENT__
 
-
-
 class IEvent
 {
 public:
 	IEvent();
 	//IEvent(ISubject&);
 	~IEvent ();
-
 	int verbosity;
 	int type;
-	
 	//ISuject* subject;
-
-
 };
 
 namespace Event 
@@ -26,8 +20,6 @@ namespace Event
 	};
 
 }//namespace Event
-
-
 
 #endif
 

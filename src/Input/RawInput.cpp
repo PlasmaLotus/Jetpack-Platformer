@@ -1,27 +1,37 @@
-#include "Input.h"
+#include "RawInput.h"
 #include <Xinput.h>
 
-Input::Input()
+RawInput::RawInput():
+	active{true},
+	disabled{false}
 {
-	init();
+	Init();
 }
 
-void Input::init()
+void RawInput::Init()
 {
 	//XInputEnable(true);
 	//XInputGetBatteryInformation()
 
 	// Init state
-	ZeroMemory(mControllers, sizeof(CONTROLLER_STATE) * MAX_CONTROLLERS);
+	ZeroMemory(mControllers, sizeof(CONTROLLER_STATE) * MAX_CONTROLLERS_);
 	update();
 }
 
-void Input::deInit()
+void RawInput::DeInit()
 {
 	//XInputEnable(false);
+	XINPUT_STATE state;
+	XINPUT_VIBRATION vibration;
+	for (DWORD i = 0; i < MAX_CONTROLLERS_; i++)
+	{
+		ZeroMemory(&state, sizeof(XINPUT_STATE));
+		ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+		XInputSetState(i, &vibration);
+	}
 }
 
-void Input::onControllerConnect(int id)
+void RawInput::onControllerConnect(int id)
 {
 	/*
 	XINPUT_VIBRATION vibration;
@@ -30,10 +40,10 @@ void Input::onControllerConnect(int id)
 	XInputSetState(id, &vibration);
 	*/
 	printf("Controller %d Connected!/n", id);
-	printf("Controller: %s\n", sf::Joystick::getIdentification(i).name.toAnsiString().c_str());
+	printf("Controller: %s\n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
 }
 
-void Input::onControllerDisconnect(int id)
+void RawInput::onControllerDisconnect(int id)
 {
 	//Reset Vibration to 0
 	XINPUT_STATE state;
@@ -41,58 +51,59 @@ void Input::onControllerDisconnect(int id)
 	XINPUT_VIBRATION vibration;
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	XInputSetState(id, &vibration);
+
+	printf("Controller: %s disconnected. \n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
 }
 
 
-
-Input::~Input()
+RawInput::~RawInput()
 {
-	deInit();
+	DeInit();
 }
 
-void Input::update()
+void RawInput::update()
 {
 	updateControllers();
-	
+	//Update keyboard
 }
 
-CONTROLLER_INPUTS Input::getControllerInputs(int id)
+CONTROLLER_INPUTS RawInput::getControllerInputs(int id)
 {
 	return CONTROLLER_INPUTS();
 }
 
-std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS> Input::getAllControllerInputs()
+std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS_> RawInput::getAllControllerInputs()
 {
-	return std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS>();
+	return std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS_>();
 }
 
-std::string Input::getControllerStateString(int id)
-{
-	return std::string();
-}
-
-std::string Input::getAllControllerStatesString(int id)
+std::string RawInput::getControllerStateString(int id)
 {
 	return std::string();
 }
 
-char * Input::getControllerStateBytes(int id)
+std::string RawInput::getAllControllerStatesString(int id)
+{
+	return std::string();
+}
+
+char * RawInput::getControllerStateBytes(int id)
 {
 	return nullptr;
 }
 
-std::string Input::getAllControllerStatesBytes(int id)
+std::string RawInput::getAllControllerStatesBytes(int id)
 {
 	return std::string();
 }
 
-HRESULT Input::updateControllers() {
+HRESULT RawInput::updateControllers() {
 	DWORD dwResult;
-	for (DWORD i = 0; i < MAX_CONTROLLERS; i++)
+	for (DWORD i = 0; i < MAX_CONTROLLERS_; i++)
 	{
 		// Simply get the state of the controller from XInput.
 		dwResult = XInputGetState(i, &mControllers[i].state);
-		printf("Controller: %s\n", sf::Joystick::getIdentification(i).name.toAnsiString().c_str());
+		//printf("Controller: %s\n", sf::Joystick::getIdentification(i).name.toAnsiString().c_str());
 		//mControllers[i].state.Gamepad.
 
 		//sf::Packet p;
@@ -105,7 +116,7 @@ HRESULT Input::updateControllers() {
 			mControllers[i].bConnected = true;
 
 			// Controller is connected 
-			printf("Controller %d is connected \n", i);
+			//printf("Controller %d is connected \n", i);
 		}
 
 		else {
@@ -115,20 +126,29 @@ HRESULT Input::updateControllers() {
 			mControllers[i].bConnected = false;
 
 			// Controller is not connected 
-			printf("Controller %d isn't connected \n", i);
+			//printf("Controller %d isn't connected \n", i);
 		}
 	}
 
 	return S_OK;
 }
 
+
+
+
+
+//CONTROLLER_STATE
 std::string CONTROLLER_STATE::toString()
 {
+	//TODO
+
 	return std::string();
 }
 
 char * CONTROLLER_STATE::toBytes()
 {
+	//TODO
+
 	return nullptr;
 }
 

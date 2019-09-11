@@ -10,7 +10,8 @@ class State {
 public:
 	State();
 	virtual ~State();
-	virtual void tick(float delta, bool render = true);
+	virtual void update(float delta, bool render);
+	virtual void render(float delta);
 	virtual void goBack();
 private:
 };

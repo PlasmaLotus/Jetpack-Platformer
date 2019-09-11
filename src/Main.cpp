@@ -1,7 +1,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Main.h"
-#include "Input.h"
+#include "Input/RawInput.h"
 //#include"states\statemanager.h"
 
 //Event testing
@@ -10,9 +10,12 @@
 #include "Event/IObserver.h"
 #include "Event/ISubject.h"
 
+#include "Engine.h"
+
 void update();
 int main(int argc, char *argv[])
 {
+
 	/*
 	EventManager em;
 	IObserver ob;
@@ -25,8 +28,8 @@ int main(int argc, char *argv[])
 	rep = em.Disconnect<IEvent>(&sb, &ob);
 	*/
 
-	Input input;
-	input.update();
+	//Input input;
+	//input.update();
 
 	/*
 	StateManager& sm = StateManager::getInstance();
@@ -34,6 +37,10 @@ int main(int argc, char *argv[])
 	return 0;
 	*/
 
+	
+	Engine& en = Engine::getInstance();
+	en.run();
+	return 0;
 
 
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
