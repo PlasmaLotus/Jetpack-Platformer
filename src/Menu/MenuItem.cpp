@@ -1,13 +1,20 @@
 #include "MenuItem.h"
 #include "Menu.h"
 
-MenuItem::MenuItem():
-	mSelectable(true),
-	mVisible(true),
-	mDisabled(false),
-	mShiftable(false)
+MenuItem::MenuItem(std::string label):
+	MenuItem(label, true, true, false, false)
 {
 }
+
+MenuItem::MenuItem(std::string label, bool visible, bool selectable, bool shiftable, bool disabled):
+	mLabel(label),
+	mVisible(visible),
+	mSelectable(selectable),
+	mShiftable(shiftable),
+	mDisabled(disabled)
+{
+}
+
 
 MenuItem::~MenuItem(){
 	mParent = nullptr;
@@ -21,7 +28,7 @@ bool MenuItem::hoverable() const {
 	return mSelectable && mVisible && !mDisabled;
 }
 
-bool MenuItem::selectale() const {
+bool MenuItem::selectable() const {
 	return mSelectable;
 }
 
@@ -46,11 +53,11 @@ void MenuItem::AltAction(){
 	OnAltConfirm();
 }
 
-void MenuItem::LeftAction(){
+void MenuItem::LeftShift(){
 	OnShiftLeft();
 }
 
-void MenuItem::RightAction(){
+void MenuItem::RightShift(){
 	OnShiftRight();
 }
 

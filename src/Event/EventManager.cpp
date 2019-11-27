@@ -8,7 +8,7 @@ EventManager::EventManager(void)
 {
 }
 
-void EventManager::update(int delta)
+void EventManager::Update(float delta)
 {
 }
 
@@ -85,7 +85,7 @@ int EventManager::_connect(ISubject * subject, IObserver * observer, void * _eve
 		//Event is null, no way to know which event
 		status = ConnectionStatus::NoEvent;
 	}
-
+	return status;
 }
 
 int EventManager::_disconnect(ISubject * subject, IObserver * observer, void * _event)

@@ -1,25 +1,42 @@
 #ifndef __IEVENT__
 #define __IEVENT__
 
-class IEvent
-{
-public:
-	IEvent();
-	//IEvent(ISubject&);
-	~IEvent ();
-	int verbosity;
-	int type;
-	//ISuject* subject;
-};
 
-namespace Event 
+namespace Event
 {
-	enum EventType
+	enum Verbosity {
+		TRACE = 2,//
+
+		DEBUG = 1,
+
+		INFO = 0,
+
+		WARN = -1,
+
+		//ERROR = -2,
+
+		FATAL = -3
+	};
+	enum Type
 	{
 		Count
 	};
 
 }//namespace Event
+class IEvent
+{
+public:
+	//IEvent( int verbose);
+	IEvent(Event::Verbosity verbose );
+	~IEvent ();
+
+	Event::Verbosity& verbosity();
+
+protected:
+	Event::Verbosity mVerbosity;
+	//int type;
+};
+
 
 #endif
 

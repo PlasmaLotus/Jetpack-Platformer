@@ -8,6 +8,8 @@ class DebugState :
 public:
 	DebugState();
 	~DebugState();
+	void Update(float dt){}
+	void Render(void* renderTarget){}
 };
 
 #endif

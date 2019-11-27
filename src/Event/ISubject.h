@@ -8,7 +8,7 @@ public:
 	ISubject();
 	~ISubject();
 protected:
-	int _canDoStuff;
+	//int _canDoStuff;
 
 
 };

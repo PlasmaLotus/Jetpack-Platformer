@@ -1,5 +1,5 @@
 #include "IMessageBox.h"
-#include "../Engine.h"
+#include "../Engine/Engine.h"
 /*
 #include "IEvent.h"
 #include "IObserver.h"
@@ -42,10 +42,11 @@ bool IMessageBox::_deregisterObserver(IObserver* observer) {
 }
 
 MessageBoxEvent::MessageBoxEvent(MessageBoxOption mbo):
-option(mbo){
+	IEvent(Event::Verbosity::TRACE),
+	option(mbo){
 }
-MessageBoxEvent::MessageBoxEvent() {
-	option = MessageBoxOption::Cancel;
+MessageBoxEvent::MessageBoxEvent():
+	MessageBoxEvent(MessageBoxOption::Cancel){
 }
 
 MessageBoxEvent::~MessageBoxEvent()

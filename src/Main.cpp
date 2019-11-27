@@ -10,7 +10,14 @@
 #include "Event/IObserver.h"
 #include "Event/ISubject.h"
 
-#include "Engine.h"
+#include "Engine/Engine.h"
+
+#include "Utility/Utility.h"
+//Menu test
+#include "Menu/Menu.h"
+#include "Menu/Slider.h"
+#include "Menu/OnOffSwitch.h"
+
 
 void update();
 int main(int argc, char *argv[])
@@ -37,13 +44,31 @@ int main(int argc, char *argv[])
 	return 0;
 	*/
 
-	
-	Engine& en = Engine::getInstance();
-	en.run();
+	Menu menu(true);
+	OnOff* onoff = new OnOff{ "SwitchOption" };
+	Slider* slider = new Slider{ "SliderOption", 0, 10, 1, 10 };
+	menu.addItem(onoff);
+	menu.addItem(slider);
+
+
+	onoff->Switch();
+	slider->RightShift();
+	slider->LeftShift();
+	slider->LeftShift();
+	slider->LeftShift();
+
+	int a = 1;
+	int b = Utility::sign(-3.69f);
+
+
+
+	Engine& EN = Engine::getInstance();
+	EN.Run();
 	return 0;
 
 
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window;
+	window.create(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
@@ -80,6 +105,7 @@ int main(int argc, char *argv[])
 			++updateCounter;
 		}
 		if (updateCounter >= 1) {
+			//TODO: int64
 			printf("MicroSeconds: %d, Nb of Updates: %d\n", elapsed.asMicroseconds(), updateCounter);
 		
 		}

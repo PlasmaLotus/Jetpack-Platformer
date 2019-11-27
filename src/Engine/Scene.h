@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <algorithm>
-#include "Entity.h"
-
+#include "Entity/Entity.h"
+//using namespace pl;
 class Scene
 {
 	Scene();
@@ -19,7 +19,7 @@ public:
 	
 
 private:
-	std::list<Entity> mEntities;
+	std::list<Entity*> mEntities;
 
 };
 

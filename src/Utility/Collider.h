@@ -1,7 +1,7 @@
 #ifndef __Collider__
 #define __Collider__
 //#include "Vector2.h"
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 
 
 class Collider

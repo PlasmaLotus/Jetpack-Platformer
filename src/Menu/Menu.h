@@ -15,14 +15,10 @@ Updated Dec 25, 2016
 
 class Menu {
 public:
-
-	//Menu();
-
 	//Repeatable is true by default
-	Menu(const bool repeatable);
+	Menu(const bool repeat);
 	Menu(std::vector<MenuItem*>& items, const bool repetable);
 	virtual ~Menu();
-
 #pragma region Loop
 
 	//Update the Item based on a certain elapsed time frame
@@ -32,9 +28,6 @@ public:
 	virtual void Render(void* renderTarget);
 
 #pragma endregion
-
-
-
 
 #pragma region Selection_Control
 	///Menu Control 
@@ -49,33 +42,49 @@ public:
 	void moveSelectionDown(const unsigned int amount);
 
 	//Change the index of the selected MenuItem to the selected value
+	//Any negative value will not change the selections
 	void setSelection(const int index);
 
-	//Change the index of the selected MenuItem to the first item
-	void setSelectionFirst();
+	//Change the index of the selected MenuItem to the first selectable item
+	void setSelectionFirst(const bool callback);
 
-	//Change the index of the selected MenuItem to the last item
-	void setSelectionLast();
+	//Change the index of the selected MenuItem to the last selectable item
+	void setSelectionLast(const bool callback);
 
+protected:
+	//Move the selection up 1 time
+	void moveSelectionDownOnce();
+	
+	//Move the selection up 1 time
+	void moveSelectionUpOnce();
 
+	//Return the index of the last selectable MenuItem
+	//This will return -1 if no such item can be found
+	int firstSelectableIndex() const;
+	
+	//Return the index of the first selectable MenuItem
+	//This will return -1 if no such item can be found
+	int lastSelectableIndex() const;
+public:
 	//Get the index of the currently selected MenuItem
 	unsigned int getSelectedIndex() const;
 
 	//Get the currently selected MenuItem
-	MenuItem& getSelectedItem() const;
+	MenuItem* getSelectedItem() const;
 
 	//Get the first MenuItem in this Menu
-	MenuItem& getFirstItem() const;
+	MenuItem* getFirstItem() const;
 
 	//Get the first MenuItem in this Menu
-	MenuItem& getLastItem() const;
+	//Todo: first item or selectable item?
+	MenuItem* getLastItem() const;
 
 	//Get the MenuItem at the index
 	//negative value means start in reverse order (from last)
-	MenuItem& getItem(const int index) const;
+	MenuItem* getItem(const int index) const;
 
 
-	//Get all the MenuItems in the Menu
+	//Get all the MenuItems in the Menu as a copy
 	std::vector<MenuItem*> items() const;
 
 	//Count
@@ -91,7 +100,7 @@ public:
 
 	//Get the number of Active MenuItems in this Menu
 	unsigned int getActiveItemCount() const;
-
+	  
 	//Get the number of Disabled MenuItems in this Menu
 	unsigned int getDisabledItemCount() const;
 
@@ -102,16 +111,48 @@ public:
 #pragma endregion Selection_Control
 
 #pragma region Callbacks
+	//Callback when the content of the menu has changed
+	//Called by default when Menu selection has updated or MenuItems have been updated or shifted
+	virtual void OnMenuUdpaded();
+	
+	//Callback when the selection change des nothing or oor expression
+	virtual void OnSelectionChangedError();
 
-	virtual void OnUpdate();
-	virtual void OnSelectionError();
-	virtual void OnSelectionChange();
-	virtual void OnSelectionIncrease();
-	virtual void OnSelectionDecrease();
-	virtual void OnSelectionConfirm();
-	virtual void OnSelectionAltConfirm();
-	virtual void OnItemsChange();
+	//Callback when the selection has been changed
+	virtual void OnSelectionChanged();
+
+	//Callback when the selection has changed upwards
+	virtual void OnSelectionUp();
+
+	//Callback when the selection has been changed downwards
+	virtual void OnSelectionDown();
+
+	//Callback when the selection has been selected/confirmed
+	virtual void OnSelectionConfirmed();
+	
+	//Callback when the selection has been selected/confirmed alternatively
+	virtual void OnSelectionAltConfirmed();
+
+	//Callback when the selectied MenuItem cannot be confirmed
+	virtual void OnSelectionConfirmedError();
+	
+	//Callback when the MenuItems have been changed
+	virtual void OnItemsChanged();
+
 	//virtual void OnReturn();
+	
+	//Callback when the MenuItem has been shifted or toggled
+	//This is called by default by OnItemShiftLeft and OnItemShiftRight
+	virtual void OnItemShifted();
+
+	//Callback when shift failed or the item is unshiftable
+	virtual void OnItemShiftedError();
+
+	//Callback when the MenuItem has been shifted left
+	virtual void OnItemShiftedLeft();
+
+	//Callback when the MenuItem has been shifted right
+	virtual void OnItemShiftedRight();
 
 #pragma endregion Callbacks
 
@@ -119,20 +160,26 @@ public:
 	//{Shifting 
 
 	//Shift the selected MenuItem left by the amount 
-	virtual void shiftSelectionLeft(int amount);
+	void shiftSelectionLeft(const int amount);
 
 	//Shift the selected MenuItem right by the amount
-	virtual void shiftSelectionRight(int amount);
+	void shiftSelectionRight(const int amount);
 
 	//Shift the selected MenuItem by the amount
-	virtual void shiftSelection(int amount);
+	//Positive means shift right and negative is shift left
+	void shiftSelection(const int amount);
 
 	//Activate the currently selected MenuItem
-	virtual void confirmSelection();
+	void confirmSelection();
 
 	//Activate Alt the currently selected MenuItem
-	virtual void altConfirmSelection();
+	void altConfirmSelection();
 
+private:
+	void shiftSelectionRightOnce();
+	void shiftSelectionLeftOnce();
+
+public:
 	//}~Shifting
 #pragma endregion Shifting Items left to right
 
@@ -141,30 +188,35 @@ public:
 	//Add a MenuItem to this menu
 	void addItem(MenuItem* item);
 
-	//Add MenuItems to this menu
+	//Add MenusItems to this menu
 	void addItems(std::vector<MenuItem*> items);
 
 	//Add a MenuItem to this menu
+	//if the index is out of range, the item will be added to the last possible index
+	//Negative means index start from the end
 	void addItemAt(MenuItem* item, const int index);
 
 	//Add MenuItems to this menu
 	void addItemsAt(std::vector<MenuItem*> items, const int index);
 
+	void _OnAddItem(MenuItem* item);
 	//Remove MenuItem from this menu
 	void removeItem(MenuItem* item);
 
 	//Remove MenuItems from this menu
-	void removeItems(std::vector<MenuItem*> items);
+	//void removeItems(std::list<MenuItem*> items);
 
+	void removeAllItems();
 #pragma endregion Add and Remove MenuItems
 
 protected:
 
-
+	bool _isSelectionValid();
 	std::vector<MenuItem*> mItems;
-	int mSelection;
+	unsigned int mSelection;
+	unsigned int mPreviousSelection;
 	bool mRepetable;
-	void addItem(MenuItem menuItem);
+	//void addItem(MenuItem menuItem);
 	bool _inputted;
 	int _inputTime;
 	static const int INPUT_INITIAL_DELAY{ 400 };

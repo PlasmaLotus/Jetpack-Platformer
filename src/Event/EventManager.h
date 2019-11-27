@@ -8,11 +8,10 @@
 
 namespace Event {
 	enum EventStatus {
-		NoEventFound = 0, 
-		NoSubjectFound = 0,
-		NoObserverFound = 0,
+		NoEventFound = -3, 
+		NoSubjectFound = -2,
+		NoObserverFound = -1,
 		Ok = 1,
-
 	};
 	enum ConnectionStatus {
 		ConnectionSuccesful = 1,
@@ -42,7 +41,7 @@ class EventManager
 public:
 	~EventManager();
 	EventManager();
-	void update(int delta);
+	void Update(float delta);
 		
 	template <class EventClass = IEvent>
 	int Connect(ISubject* subject, IObserver* observer) {

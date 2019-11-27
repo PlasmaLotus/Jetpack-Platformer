@@ -1,13 +1,7 @@
 #include "State.h"
-
-State::State(){
-}
-State::~State(){
-}
-void State::update(float delta, bool render = true){
-}
-void State::render(float delta)
-{
-}
-void State::goBack() {
-}
+State::State(){}
+State::~State(){}
+void State::Update(float delta){}
+void State::Render(void* renderTarget){}
+void State::OnEnter(){}
+void State::OnExit(){}

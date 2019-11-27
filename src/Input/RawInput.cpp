@@ -1,9 +1,10 @@
 #include "RawInput.h"
 #include <Xinput.h>
 
-RawInput::RawInput():
-	active{true},
-	disabled{false}
+
+RawInput::RawInput() :
+	active{ true },
+	disabled{ false }
 {
 	Init();
 }
@@ -14,6 +15,7 @@ void RawInput::Init()
 	//XInputGetBatteryInformation()
 
 	// Init state
+
 	ZeroMemory(mControllers, sizeof(CONTROLLER_STATE) * MAX_CONTROLLERS_);
 	update();
 }
@@ -40,7 +42,7 @@ void RawInput::onControllerConnect(int id)
 	XInputSetState(id, &vibration);
 	*/
 	printf("Controller %d Connected!/n", id);
-	printf("Controller: %s\n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
+	//printf("Controller: %s\n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
 }
 
 void RawInput::onControllerDisconnect(int id)
@@ -52,9 +54,8 @@ void RawInput::onControllerDisconnect(int id)
 	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
 	XInputSetState(id, &vibration);
 
-	printf("Controller: %s disconnected. \n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
+	//printf("Controller: %s disconnected. \n", sf::Joystick::getIdentification(id).name.toAnsiString().c_str());
 }
-
 
 RawInput::~RawInput()
 {
@@ -69,7 +70,7 @@ void RawInput::update()
 
 CONTROLLER_INPUTS RawInput::getControllerInputs(int id)
 {
-	return CONTROLLER_INPUTS();
+	return CONTROLLER_INPUTS();//TODO: add return statement
 }
 
 std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS_> RawInput::getAllControllerInputs()
@@ -79,12 +80,12 @@ std::array<CONTROLLER_INPUTS, MAX_CONTROLLERS_> RawInput::getAllControllerInputs
 
 std::string RawInput::getControllerStateString(int id)
 {
-	return std::string();
+	return std::string();//TODO: add return statement
 }
 
 std::string RawInput::getAllControllerStatesString(int id)
 {
-	return std::string();
+	return std::string();//TODO: add return statement
 }
 
 char * RawInput::getControllerStateBytes(int id)
@@ -107,7 +108,7 @@ HRESULT RawInput::updateControllers() {
 		//mControllers[i].state.Gamepad.
 
 		//sf::Packet p;
-		
+
 		if (dwResult == ERROR_SUCCESS)
 		{
 			if (!mControllers[i].bConnected) {
@@ -115,7 +116,7 @@ HRESULT RawInput::updateControllers() {
 			}
 			mControllers[i].bConnected = true;
 
-			// Controller is connected 
+			// Controller is connected
 			//printf("Controller %d is connected \n", i);
 		}
 
@@ -125,7 +126,7 @@ HRESULT RawInput::updateControllers() {
 			}
 			mControllers[i].bConnected = false;
 
-			// Controller is not connected 
+			// Controller is not connected
 			//printf("Controller %d isn't connected \n", i);
 		}
 	}
@@ -133,36 +134,32 @@ HRESULT RawInput::updateControllers() {
 	return S_OK;
 }
 
-
-
-
-
 //CONTROLLER_STATE
 std::string CONTROLLER_STATE::toString()
 {
 	//TODO
 
-	return std::string();
+	return std::string();//TODO: add return statement
 }
 
 char * CONTROLLER_STATE::toBytes()
 {
 	//TODO
 
-	return nullptr;
+	return nullptr;//TODO: add return statement
 }
 
+/*
 sf::Packet& operator <<(sf::Packet& packet, const CONTROLLER_STATE& c)
 {
-	//c.state.
 	return packet << c.state.Gamepad.wButtons <<
 		c.state.Gamepad.sThumbLX << c.state.Gamepad.sThumbLY << c.state.Gamepad.bLeftTrigger <<
 		c.state.Gamepad.sThumbRX << c.state.Gamepad.sThumbRY << c.state.Gamepad.bRightTrigger;
 }
-
 sf::Packet& operator >>(sf::Packet& packet, CONTROLLER_STATE& c)
 {
 	return packet >> c.state.Gamepad.wButtons >>
 		c.state.Gamepad.sThumbLX >> c.state.Gamepad.sThumbLY >> c.state.Gamepad.bLeftTrigger >>
 		c.state.Gamepad.sThumbRX >> c.state.Gamepad.sThumbRY >> c.state.Gamepad.bRightTrigger;
 }
+*/

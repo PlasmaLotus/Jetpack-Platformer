@@ -6,6 +6,7 @@ Updated Sept 10, 2019
 #ifndef _Menu_Item_
 #define _Menu_Item_
 
+#include <string>
 /*
 typedef std::function<void() > command;
 
@@ -18,7 +19,10 @@ class Menu;
 //Abstract Class Item for a Menu
 class MenuItem {
 public:
-	MenuItem();
+
+	//Ctor as visible and selectable
+	MenuItem(std::string label);
+	MenuItem(std::string label, bool visible, bool selectable,  bool shiftable, bool disabled);
 	~MenuItem();
 
 #pragma region Accessers
@@ -27,7 +31,7 @@ public:
 	virtual bool hoverable() const;
 
 	//Item can be activated by click or menu selection
-	virtual bool selectale() const;
+	virtual bool selectable() const;
 
 	//Item is visible in the menu
 	virtual bool visible() const;
@@ -54,6 +58,20 @@ public:
 	void setContainer(Menu* menu);
 	//void setParent(Menu* container);
 
+
+	//Main label access
+
+	//Set the label of this MenuItem
+	void setOptionLabel(const std::string label) {
+		mLabel = label;
+	}
+	void setOptionLabel(char* label) {
+		setOptionLabel(std::string(label));
+	}
+	std::string getLabel() {
+		return mLabel;
+	}
+
 #pragma endregion Getters and Setters
 
 #pragma region Actions
@@ -66,10 +84,10 @@ public:
 	virtual void AltAction();
 
 	//Action to perform when the Item is indexed left (when left is pressed on the item)
-	virtual void LeftAction();
+	virtual void LeftShift();
 
 	//Action to perform when the Item is indexed right (when right is pressed on the item)
-	virtual void RightAction();
+	virtual void RightShift();
 
 #pragma endregion Behaviour on Menu input
 
@@ -103,7 +121,6 @@ public:
 #pragma endregion Callbacks
 	
 #pragma region Loop
-
 	///Handling - Loop
 
 	//Update the Item based on a certain elapsed time frame
@@ -111,7 +128,6 @@ public:
 
 	//Display the Item on a rendering target
 	virtual void Render(void* renderTarget);
-
 #pragma endregion Loop
 
 	/*
@@ -136,26 +152,14 @@ public:
 	int getRangeValue();
 	*/
 
-private:
-
-	//Container
-	Menu* mParent;
+protected:
+	Menu* mParent;//Container
+	std::string mLabel;
 
 	bool mSelectable;
 	bool mVisible;
 	bool mDisabled;
 	bool mShiftable;
-
-	/*
-	unsigned int range;
-	unsigned int maxRange;
-	MenuItemType _optionType;
-	std::string _name;
-	command _fn;
-	int _value;
-	int _max;
-	*/
-
 };
 
 
