@@ -15,7 +15,7 @@ EventManager::~EventManager(void)
 
 #define Call_Member_Fn(object, ptr) ((object).*(ptr))
 
-void EventManager::update(int delta)
+void EventManager::Update(int delta)
 {
 	//do stuff here
 }
@@ -93,7 +93,7 @@ int EventManager::_connect(ISubject * subject, IObserver * observer, void * _eve
 		//Event is null, no way to know which event
 		status = ConnectionStatus::NoEvent;
 	}
-
+	return status;
 }
 
 int EventManager::_disconnect(ISubject * subject, IObserver * observer, void * _event)

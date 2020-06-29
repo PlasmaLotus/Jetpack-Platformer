@@ -1,9 +1,7 @@
 #ifndef __EVENT__MANAGER__
 #define __EVENT__MANAGER__
 
-/*
-Event manager is owner of events stored, but not of observers and subjects.
-*/
+
 #include <map>
 #include <list>
 #include <functional>
@@ -11,15 +9,15 @@ Event manager is owner of events stored, but not of observers and subjects.
 
 namespace Event {
 	enum EventStatus {
-		NoEventFound = 0, 
-		NoSubjectFound = 0,
-		NoObserverFound = 0,
+		NoEventFound = -3, 
+		NoSubjectFound = -2,
+		NoObserverFound = -1,
 		Ok = 1,
-
 	};
 	enum ConnectionStatus {
 		ConnectionSuccesful = 1,
 		DisconnectionSuccesful = 1,
+		Success = 1,
 		NoEvent = 0,
 		NoObserver = -1,
 		NoSubject = -2,
@@ -35,12 +33,15 @@ class IEvent;
 class Parcel;
 class SubParcel;
 
+/*
+Event manager is owner of events stored, but not of observers and subjects.
+*/
 class EventManager
 {
 public:
 	~EventManager();
 	EventManager();
-	void update(int delta);
+	void Update(float delta);
 		
 	template <class EventClass = IEvent>
 	int Connect(ISubject* subject, IObserver* observer) {
@@ -251,9 +252,7 @@ public:
 	}
 
 	void emit(ISubject* subject, IEvent* event, bool async);
-
-		
-		
+	
 	int getEvent(IObserver* observer, IEvent* oEvent);
 	IEvent* getEvent(IObserver* observer);
 private:
