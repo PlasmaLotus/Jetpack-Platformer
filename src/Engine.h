@@ -1,90 +1,104 @@
-/*
-
-*/
-
-
 #ifndef __ENGINE__
 #define __ENGINE__
 
-#include "SDL.h"
 #include <SFML/Graphics.hpp>
-//#include <>
 #include <list>
-//#include <algorithm>
-#include "Entity.h"
+#include <algorithm>
 #include <thread>
-#include <stdint.h>
-#include <stack>
-#include <list>
+
 #include <vector>
-#include "State/State.h"
+
+#include "Entity.h"
+#include "Input.h"
 
 class Engine
 {
-public:
+
+private:
+	//static Engine* mInstance;
+	Engine();
 	virtual ~Engine();
+public:
 	void loadContent();
 	void unloadContent();
-	bool initialize();
-	bool deinitialize();
-	void clear();
+	void initialize();
 	void draw(sf::Time time);
-	void display();
-	void handleEvents();
 	void run();
 	void update(sf::Time time);
 	void tick();
-	void render();
+
+
+	//Input& Input();
+
 	static Engine& getInstance();
-	sf::RenderWindow* getWindow();
-
-	bool stateHasFocus(State* state);
-	bool removeState(State* state);
-	bool addState(State* state);
-
-	bool removeLastState();
-	//bool switchToState(State* state);
-
-	//State transition8
+	//static Engine* getInstance();
 
 	static float DeltaTime();
-	uint64_t getElapsedTimeAsMilliseconds();
+	static float RawDeltaTime();
 private:
-	Engine();
-	//static Engine& mInstance;
-
+	
 	sf::Time mElapsedTime;
+	sf::Time mElapsedTimeTotal;
+	
 	sf::Time mPrevElapsedTime;
+
 	sf::Time mTargetElapsedTime;
+	sf::Time mTargetElapsedTimeRender;
+
 	sf::Time mAccumulatedElapsedTime;
-	sf::Time mLag;
-	float mRawDeltaTime;
-	float mDeltaTime;
+	sf::Time mAccumulatedElapsedTimeRender;
+	
+	static float mRawDeltaTime;
+	static float mDeltaTime;
 	sf::RenderWindow mWindow;
-	long mFpsCounter;
+	long mFrameCounter;
+	long _mFrameSubCounter;
+	sf::Time _prevTimeStamp;
 	sf::Clock mClock;
 	bool isRunning;
-	sf::Time MS_PER_FRAME{ sf::seconds(1.f / 60.f) };
+	sf::Time _mFpsDeltaTime;
 
-
-	sf::Time mAccumulatedRenderElapsedTime;
-	sf::Time mTargetRenderElapsedTime;
+	float _fps;
 	bool isFixedTimeStep;
+	bool isFixedTimeStepRender;
 	long ticks;
 	long previousTicks;
-	bool renderThisFrame;
 
 
-	sf::CircleShape defaultShape;
-	//CTRenderer ct;
+	std::vector<Entity *>mEntities;
 
-	sf::View mainView;
-	sf::View otherView;
+	template <class T = Entity>
+	std::list<T*> GetEntities() {
+		std::list<T*> litty;
+		T* t = nullptr;
+		for (Entity* const e : mEntities) {
+			t = e;
+			if (t) {
+				litty.push_back(t);
+			}
+		}
+		return t;
+	}
 
-	//States
-	int currentStateID;
-	std::vector<State*> mStates;
+	template <class T = Entity>
+	std::list<T*> GetFirstEntity() {
+		std::list<T*> litty;
+		T* t = nullptr;
+		for (Entity* const e : mEntities) {
+			t = e;
+			if (t) {
+				litty.push_back(t);
+			}
+		}
+		return t;
+	}
+	//void isEntityTracked();
+	//void isComponentTracked();
+	//void getNearestEntity();
 
+
+	//
 };
+
 
 #endif // ENGINE

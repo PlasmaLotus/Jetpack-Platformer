@@ -7,6 +7,7 @@
 #include <math.h>
 #include "Component.h"
 
+
 class Collider;
 class Entity {
 public:
@@ -14,18 +15,27 @@ public:
 	Entity(sf::Vector2f pos);
 	virtual ~Entity();
 
-	virtual void update();
-	virtual void render();
+	virtual bool Active();
+	virtual bool Visible();
+	virtual bool Collidable();
+
+	virtual void Update();
+	virtual void Render();
 	virtual void debugRender();
-	virtual void added(char Scene);
-	virtual void removed(char Scene);
-	virtual void removeSelf();
-	virtual void add(Component* c);
-	virtual void remove(Component* c);
-	bool active;
-	bool visible;
-	bool collidable;
-	
+	virtual void Awake(void* Scene);
+	virtual void Added(void* Scene);
+	virtual void Removed(void* Scene);
+	virtual void RemoveSelf();
+	virtual void Add(Component* c);
+	virtual void Remove(Component* c);
+
+	//virtual void HandleGraphicsReset();
+	//virtual void HandleGraphicsCreate();
+
+	//scene stuff
+	virtual void SceneBegin(void* scene);
+	virtual void SceneEnd(void* scene);
+
 
 	sf::Vector2f position() { return mPosition; }
 	sf::Vector2f & rPosition() { return mPosition; }
@@ -38,6 +48,15 @@ protected:
 	std::list<Component*>mGabageComponentList;
 
 	sf::RectangleShape debugRectangle;
+
+	//Collision
+	virtual void CollisionCheck(Entity const& e);
+	virtual void CollisionCheck(Entity const& e, sf::Vector2f at);
+
+	bool mActive;
+	bool mVisible;
+	bool mCollidable;
+
 };
 
 #endif // ENTITY

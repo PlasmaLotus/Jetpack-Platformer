@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class Entity;
 class Component
 {
@@ -23,5 +24,7 @@ private:
 	Entity* mEntity;
 	int* mScene;
 };
+
+
 
 #endif // __COMPONENT__

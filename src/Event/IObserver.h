@@ -1,19 +1,20 @@
-#ifndef __EVENT__
-#define __EVENT__
-/*
-#include <map>
-#include <list>
+#ifndef __IOBSERVER__
+#define __IOBSERVER__
 
-class IEvent
+class ISubject;
+class IEvent;
+
+/* Interface that observes and can be notified of an IEvent*/
+class IObserver
 {
 public:
-	IEvent();
-	~IEvent ();
+	IObserver();
+	~IObserver();
 
+	virtual void HandleEvent(ISubject* subject, const IEvent& event);
+protected:
+	int __nbEventRecived;
 };
-*/
-
-
 
 #endif
 
