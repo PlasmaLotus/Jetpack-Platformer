@@ -3,7 +3,7 @@
 
 //include <SFML/Graphics.hpp>
 #include <list>
-//#include <>
+#include <string>
 //#include <algorithm>
 #include <math.h>
 #include "inputRecord.h"

@@ -2,23 +2,55 @@
 #include "Input/Input.h"
 //#include "ControllerTestRenderer.h"
 #include "Main.h"
+#include <SDL.h>
+float Engine::mRawDeltaTime = 0.0f;
+float Engine::mDeltaTime = 0.0f;
 
-Engine::Engine():
-	mFpsCounter(0),
-	isRunning(true),
-	isFixedTimeStep(true),
-	renderThisFrame(true),
-	mTargetElapsedTime(sf::seconds(DeltaTime())),
-	mTargetRenderElapsedTime(sf::seconds(DeltaTime()))
+float Engine::DeltaTime()
 {
-	initialize();
+	return 1.f / 60.f;
+	//return 1.f / 144.f;
 }
 
+float Engine::RawDeltaTime()
+{
+	return 0.0f;
+}
+
+
+Engine::Engine() :
+	mElapsedTime(sf::Time::Zero),
+	mElapsedTimeTotal(sf::Time::Zero),
+	mPrevElapsedTime(sf::Time::Zero),
+	mTargetElapsedTime(sf::seconds(DeltaTime())),
+	mTargetElapsedTimeRender(sf::seconds(DeltaTime())),
+	mAccumulatedElapsedTime(sf::Time::Zero),
+	mAccumulatedElapsedTimeRender(sf::Time::Zero),
+	//mFpsCounter(0),
+	mFrameCounter(0),
+	_mFrameSubCounter(0),
+	_prevTimeStamp(sf::Time::Zero),
+	mClock(sf::Clock()),
+	isRunning(true),
+	_mFpsDeltaTime(sf::Time::Zero),
+	isFixedTimeStep(false),
+	isFixedTimeStepRender(false),
+	//renderThisFrame(true),
+	ticks(0),
+	previousTicks(0)
+{
+	mAccumulatedElapsedTime = mAccumulatedElapsedTimeRender = sf::Time::Zero;
+	mPrevElapsedTime = mClock.restart();
+	mElapsedTime = mClock.restart();
+	//mElapsedTimeRender = mElapsedTime;
+	Initialize();
+}
 
 Engine::~Engine(){
+	mStates.clear();
 }
 
-bool Engine::initialize() {
+bool Engine::Initialize() {
 	bool result = true;
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		///SDL didnt init;
@@ -33,12 +65,11 @@ bool Engine::initialize() {
 	//SplashScreen State
 	currentStateID = 0;
 
-
 	isRunning = true;
 	return result;
 }
 
-bool Engine::deinitialize()
+bool Engine::Deinitialize()
 {
 	//SDL_DestroyRenderer();
 	//SDL_DestroyWindow();
@@ -46,29 +77,38 @@ bool Engine::deinitialize()
 	return true;
 }
 
-void Engine::clear() {
+void Engine::Clear() {
 	mWindow.clear();
 }
 
-void Engine::draw(sf::Time time)
+void Engine::loadContent()
 {
-
-
-	mWindow.draw(defaultShape);
 }
 
-void Engine::display() {
+void Engine::unloadContent()
+{
+}
+
+
+void Engine::Draw(sf::Time time)
+{
+	Clear();
+	//mWindow.clear();
+	mWindow.draw(defaultShape);
+	Display();
+}
+
+void Engine::Display() {
 	mWindow.display();
 }
 
 
-void Engine::run()
+void Engine::Run()
 {
 	mPrevElapsedTime = mClock.restart();
 	mElapsedTime = mClock.restart();
-	mLag = sf::milliseconds(0);
 	mAccumulatedElapsedTime = sf::milliseconds(0);
-	mAccumulatedRenderElapsedTime = sf::milliseconds(0);
+	mAccumulatedElapsedTimeRender = sf::milliseconds(0);
 	sf::Time elapsed = mClock.getElapsedTime();
 	//initialize();
 
@@ -82,19 +122,16 @@ void Engine::run()
 		mElapsedTime = mClock.restart();
 
 		mAccumulatedElapsedTime += elapsed ;
-		mAccumulatedRenderElapsedTime += elapsed;
+		mAccumulatedElapsedTimeRender += elapsed;
 
-
-
-
-		handleEvents();
+		HandleEvents();
 		tick();//has update
 		render();
 	}
-	deinitialize();
+	Deinitialize();
 }
 
-void Engine::handleEvents() {
+void Engine::HandleEvents() {
 
 	sf::Event event;
 	while (mWindow.pollEvent(event))
@@ -109,132 +146,176 @@ void Engine::handleEvents() {
 }
 
 void Engine::update(sf::Time time)
-{
-	
-
+{	
+	float debug = 0.0f;
 	//events 1st probably
 
 	//Update every entity
 	//check and handle collisions
 	//render
+	/*Gamepad*/
+	gotoxy(0, 0);
+	InputRaw_X::getInstance().pollInput();
+	printf("XInput Gamepad Data:");
+	for (int i = 0; i < 4; ++i) {
+		XGPad& pad = InputRaw_X::getGamepad(i);
+		if (pad.enabled) {
+			printf("Gamepad(%d): L: %d %d, R: %d %d, LT: %d, RT: %d , Buttons: %d--------\n", 
+				i, pad.state.Gamepad.sThumbLX, pad.state.Gamepad.sThumbLY,
+				pad.state.Gamepad.sThumbRX, pad.state.Gamepad.sThumbRY, pad.state.Gamepad.bLeftTrigger, 
+				pad.state.Gamepad.bRightTrigger, pad.state.Gamepad.wButtons);
+			//printf("Battery:")
+		}
+	}
+
+	printf("SFML Joystick Data: \n");
+	
+	for (int i = 0; i < sf::Joystick::Count; ++i) {
+		if (sf::Joystick::isConnected(i)) {
+			sf::Joystick::Identification id = sf::Joystick::getIdentification(i);
+
+			printf("Joystick(%d): Name: %s, ProdID: %d, VendorID: %d", i, id.name.toUtf8().c_str(), id.productId, id.vendorId);
+			printf("\nButtons(%02d):", sf::Joystick::getButtonCount(i));
+			for (int button = 0; button < sf::Joystick::getButtonCount(i); ++button) {
+				//sf::Joystick::
+				if (sf::Joystick::isButtonPressed(i, button)) {
+					printf("|%02d", button);
+				}
+				else {
+					printf("|  ");
+				}
+			}
+			printf("\nAxis(): ");
+
+			//Axis test
+			if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::PovX))
+			{
+				float pos = 0.0f;
+				
+				pos = sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::PovX);
+				debug = -1.0f;
+			}
+			//sf::Joystick::
+			debug = 0.0f;
+			for (int axis = 0; axis < sf::Joystick::AxisCount; ++axis) {
+				if(sf::Joystick::hasAxis(i, static_cast<sf::Joystick::Axis>(axis)))
+					debug += 1.0f;
+
+				printf("%d - %3.2f ", axis, sf::Joystick::getAxisPosition(i, static_cast<sf::Joystick::Axis>(axis)));
+			}
+			sf::Joystick::Identification identification = sf::Joystick::getIdentification(i);
+			printf("\n");
+			//printf("Joystick(%d): %d, L: %d %d, R: %d %d, LT: %d, RT: %d \n", i, pad.state.Gamepad.wButtons, pad.state.Gamepad.sThumbLX, pad.state.Gamepad.sThumbLY,
+		}
+	}
+
+	printf("\n SDL Joystick Data\n");
+
+	SDL_Joystick* joy;
+	// Check for joystick
+	int index = 0;
+	if (SDL_NumJoysticks() > 0) {
+		// Open joystick
+		joy = SDL_JoystickOpen(0);
+
+		if (joy) {
+			printf("Opened Joystick 0\n");
+			printf("Name: %s\n", SDL_JoystickNameForIndex(0));
+			SDL_JoystickID id = SDL_JoystickInstanceID(joy);
+			printf("ID: %s\n", SDL_JoystickNameForIndex(0));
+			printf("Number of Axes: %d\n", SDL_JoystickNumAxes(joy));
+			printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(joy));
+			printf("Number of Balls: %d\n", SDL_JoystickNumBalls(joy));
+		}
+		else {
+			printf("Couldn't open Joystick 0\n");
+		}
+
+		// Close if opened
+		if (SDL_JoystickGetAttached(joy)) {
+			SDL_JoystickClose(joy);
+		}
+	}
+
+
+	gotoxy(0, 10);
 }
 
 void Engine::tick()
 {
+	mFrameCounter++;
+	_mFrameSubCounter++;
+	if (mFrameCounter % mFrameCounter == 42) {
+
+		sf::Time _lmao = mElapsedTimeTotal - _prevTimeStamp;
+		mDeltaTime = _lmao.asSeconds() / _mFrameSubCounter;
+		_fps = 1.0f / mDeltaTime;
+		_prevTimeStamp = mElapsedTimeTotal;
+	}
 	//Handle ununiform time
 	//update Game
 
 
 	if (isFixedTimeStep) {
-		//int updateCounter = 0;
-		ticks = 0;
+		int lmao = 0;
+		//mElapsedTime = mTargetElapsedTime;
+		//mAccumulatedElapsedTime -= mTargetElapsedTime;
+		mAccumulatedElapsedTime += mElapsedTime;
 
+		//MS_PER_FRAME
 		while (mAccumulatedElapsedTime >= mTargetElapsedTime) {
-			update(mTargetElapsedTime);
-			++ticks;
-			mAccumulatedElapsedTime -= mTargetElapsedTime;
-
-		}
-		if (ticks >= 1)
-			printf("MicroSeconds: %d, Nb of Updates: %d\n", mElapsedTime.asMicroseconds(), ticks);
-		else
-			printf("MicroSeconds: %d, AccumulatedTime: %d, ---------------------\n", mElapsedTime.asMicroseconds(), mAccumulatedElapsedTime.asMicroseconds());
-
-		if (mAccumulatedElapsedTime < sf::Time::Zero) {
-			mAccumulatedElapsedTime = sf::Time::Zero;
+			update(mTargetElapsedTime); // update(mElapsedTime);
+			++lmao;
+			mAccumulatedElapsedTime -= mElapsedTime;
 		}
 	}
 	else {
 		//Just tick as often as the PC can
+		//update(mElapsedTime);
+		//mElapsedTime = mAccumulatedElapsedTime;
+		//mAccumulatedElapsedTime = sf::Time::Zero;
+		//update(mElapsedTime);
+
 		//update(sf::Time::Zero);
 		mElapsedTime = mAccumulatedElapsedTime;
 		mAccumulatedElapsedTime = sf::Time::Zero;
 		update(mElapsedTime);
-		
 	}
-
-	
 }
 
-void Engine::render()
-{
-	//mWindow.clear();
-	
-	
-	
-	
-	//bool renderThisFrame = true;
-	//renderThisFrame = true;
-	if (mAccumulatedRenderElapsedTime >= mTargetRenderElapsedTime) {
+void Engine::render(){
+	//ct.render(&mWindow);
+	//bool renderThisFrame = false;
+	/*
+	if (mAccumulatedElapsedTimeRender >= mTargetElapsedTimeRender) {
 		if (renderThisFrame) {
-			clear();
-			draw(sf::Time::Zero);
-			display();
-			mAccumulatedRenderElapsedTime -= mTargetRenderElapsedTime;
+			Clear();
+			Draw(sf::Time::Zero);
+			Display();
+			mAccumulatedElapsedTimeRender -= mTargetElapsedTimeRender;
 
 		}
 		else
 			renderThisFrame = true;
 	}
-	
+	*/
 
-
-	
-
-
-	/*Gamepad*/
-	InputRaw_X::getInstance().pollInput();
-	printf("XInput Gamepad Data:");
-	gotoxy(0, 20);
-	for (int i = 0; i < 4; ++i) {
-		XGPad& pad = InputRaw_X::getGamepad(i);
-		if (pad.enabled) {
-			printf("Gamepad(%d): %d, L: %d %d, R: %d %d, LT: %d, RT: %d \n", i, pad.state.Gamepad.wButtons, pad.state.Gamepad.sThumbLX, pad.state.Gamepad.sThumbLY,
-				pad.state.Gamepad.sThumbRX, pad.state.Gamepad.sThumbRY, pad.state.Gamepad.bLeftTrigger, pad.state.Gamepad.bRightTrigger);
-		
-			//printf("Battery:")
+	if (isFixedTimeStepRender) {
+		mAccumulatedElapsedTimeRender += mElapsedTime;
+		//MS_PER_RENDER_FRAME
+		while (mAccumulatedElapsedTimeRender >= mTargetElapsedTimeRender) {
+			Draw(mTargetElapsedTimeRender);
+			mAccumulatedElapsedTimeRender -= mTargetElapsedTimeRender;
+			//mAccumulatedElapsedTimeRender -= mElapsedTime;
 		}
+		//Draw(mAccumulatedElapsedTimeRender);
 	}
-	
-	printf("SFML Joystick Data: \n");
-
-	for (int i = 0; i < sf::Joystick::Count; ++i) {
-		if (sf::Joystick::isConnected(i)) {
-			sf::Joystick::Identification id = sf::Joystick::getIdentification(i);
-			
-			
-			printf("Joystick(%d): Name: %s, ProdID: %d, VendorID: %d", i, id.name.toUtf8().c_str() , id.productId, id.vendorId);
-			printf("\n Buttons:");
-			for (int button = 0; button < sf::Joystick::getButtonCount(i); ++button) {
-				//sf::Joystick::
-				if (sf::Joystick::isButtonPressed(i, button)) {
-					printf("%d", button);
-				}
-				else {
-					printf(" ");
-				}
-			}
-			printf(" Axis: ");
-			for (int axis = 0; axis < sf::Joystick::AxisCount; ++axis) {
-				//if(sf::Joystick::getAxisPosition())
-			
-				printf("%d - %3.2f ", axis, sf::Joystick::getAxisPosition(i, sf::Joystick::Axis(axis)));
-			}
-			printf("\n");
-			//printf("Joystick(%d): %d, L: %d %d, R: %d %d, LT: %d, RT: %d \n", i, pad.state.Gamepad.wButtons, pad.state.Gamepad.sThumbLX, pad.state.Gamepad.sThumbLY,
-
-		}
+	else {
+		//Render every tick
+		Draw(mElapsedTime);
+		mAccumulatedElapsedTimeRender -= mElapsedTime;
 	}
 
-	
-	gotoxy(0, 10);
-
-
-
-
-	//ct.render(&mWindow);
-	//Render
-	//mWindow.display();
 }
 
 Engine& Engine::getInstance()
@@ -246,8 +327,9 @@ Engine& Engine::getInstance()
 	if (!mInstance) {
 		mInstance = new Engine();
 	}
-	return mInstance;
-	 */
+	return *mInstance;
+	*/
+	
 }
 
 sf::RenderWindow* Engine::getWindow()
@@ -305,18 +387,14 @@ bool Engine::removeLastState()
 	return false;
 	
 }
-/*
 bool Engine::switchToState(State * state)
 {
 	return false;
 }
+/*
 */
 
-float Engine::DeltaTime()
-{
-	return 1.f / 60.f;
-	//return 1.f / 144.f;
-}
+
 
 uint64_t Engine::getElapsedTimeAsMilliseconds()
 {

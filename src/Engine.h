@@ -9,8 +9,9 @@
 #include <vector>
 
 #include "Entity.h"
-#include "Input.h"
-
+#include "Input/Input.h"
+#include "State/State.h"
+#include <windows.h>//gotoXY
 class Engine
 {
 
@@ -21,20 +22,36 @@ private:
 public:
 	void loadContent();
 	void unloadContent();
-	void initialize();
-	void draw(sf::Time time);
-	void run();
+	bool Initialize();
+	bool Deinitialize();
+	void Clear();
+	void Draw(sf::Time time);
+	void Display();
+	void Run();
+	void render();
 	void update(sf::Time time);
 	void tick();
+
+	void HandleEvents();
 
 
 	//Input& Input();
 
 	static Engine& getInstance();
+	sf::RenderWindow* getWindow();
 	//static Engine* getInstance();
 
 	static float DeltaTime();
 	static float RawDeltaTime();
+	uint64_t getElapsedTimeAsMilliseconds();
+
+
+	bool stateHasFocus(State * state);
+	bool removeState(State * state);
+	bool addState(State * state);
+	bool removeLastState();
+	bool switchToState(State * state);
+	
 private:
 	
 	sf::Time mElapsedTime;
@@ -96,8 +113,10 @@ private:
 	//void isComponentTracked();
 	//void getNearestEntity();
 
-
-	//
+	sf::CircleShape defaultShape;
+	bool renderThisFrame = false;
+	std::vector<State*> mStates;
+	int currentStateID;
 };
 
 

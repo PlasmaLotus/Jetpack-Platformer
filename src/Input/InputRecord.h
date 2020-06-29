@@ -6,8 +6,6 @@ public:
 	InputRecord();
 	~InputRecord();
 
-
-
 };
 
 #endif // __INPUT_RECORD__

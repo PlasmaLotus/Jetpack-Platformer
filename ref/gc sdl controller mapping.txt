@@ -1,0 +1,1 @@
+03000000790000004618000000000000,GameCube Controller Adapter (Configured),platform:Windows,a:b1,b:b2,x:b3,y:b0,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,leftx:a0,lefty:a1,rightx:a5~,righty:a2~,lefttrigger:a3,righttrigger:a4,
